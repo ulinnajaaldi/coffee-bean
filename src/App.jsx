@@ -1,15 +1,48 @@
-import React, { Suspense } from "react";
+import React, { useState, Suspense, useRef } from "react";
 import logo from "./assets/coffe-logo.svg";
 import shapeHero from "./assets/shape-hero.svg";
 import shapeTea from "./assets/shape-tea-cup.svg";
+import coffeOrange from "./assets/coffe1.webp";
+import coffePurple from "./assets/coffe2.webp";
+import coffeGreen from "./assets/coffe3.webp";
 import { BiShoppingBag } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FiArrowUpRight } from "react-icons/fi";
-import { ReactSVG } from "react-svg";
 import Marquee from "react-fast-marquee";
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
 export default function App() {
+  const [isOrangeActive, setIsOrangeActive] = useState(true);
+  const [isPurpleActive, setIsPurpleActive] = useState(false);
+  const [isGreenActive, setIsGreenActive] = useState(false);
+
+  const spline = useRef();
+
+  function onLoad(splineApp) {
+    spline.current = splineApp;
+  }
+
+  function changeColorOrange() {
+    spline.current.emitEvent("mouseDown", "toggleOrange");
+    setIsOrangeActive(true);
+    setIsPurpleActive(false);
+    setIsGreenActive(false);
+  }
+
+  function changeColorPurple() {
+    spline.current.emitEvent("mouseDown", "togglePurple");
+    setIsPurpleActive(true);
+    setIsOrangeActive(false);
+    setIsGreenActive(false);
+  }
+
+  function changeColorGreen() {
+    spline.current.emitEvent("mouseDown", "toggleGreen");
+    setIsGreenActive(true);
+    setIsOrangeActive(false);
+    setIsPurpleActive(false);
+  }
+
   const Loading = () => {
     return (
       <div className="flex justify-center items-center h-full">
@@ -56,16 +89,70 @@ export default function App() {
               <BiShoppingBag className="p-[10px] w-[46px] h-[46px] bg-primary text-white rounded-full" />
             </div>
           </section>
+
           <section className="flex-1">
             <div>
-              <img src={shapeHero} alt="shape-tea-pot" className="w-full" />
+              <div className="w-full">
+                <svg
+                  viewBox="0 0 437 501"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 200C0 89.543 89.543 0 200 0H237C347.457 0 437 89.5431 437 200V501H0V200Z"
+                    fill={
+                      isOrangeActive
+                        ? "#FFB193"
+                        : isPurpleActive
+                        ? "#fd7c94"
+                        : isGreenActive
+                        ? "#42c4a3"
+                        : null
+                    }
+                  />
+                </svg>
+              </div>
+              {/* <img src={shapeHero} alt="shape-tea-pot" className="w-full" /> */}
+              <div className="relative flex items-center justify-center z-[99]">
+                <button
+                  type="button"
+                  onClick={changeColorOrange}
+                  className={`absolute cursor-pointer h-[80px] w-[80px]  bg-[#FFB193] right-10 -bottom-10 rounded-full ${
+                    isOrangeActive ? "outline outline-[5px] outline-white" : ""
+                  }`}
+                >
+                  <img src={coffeOrange} className="-top-3 absolute" />
+                </button>
+                <button
+                  type="button"
+                  onClick={changeColorPurple}
+                  className={`absolute cursor-pointer h-[80px] w-[80px] bg-[#fd7c94] -bottom-10 rounded-full ${
+                    isPurpleActive ? "outline outline-[5px] outline-white" : ""
+                  }`}
+                >
+                  <img src={coffePurple} className="-top-3 absolute" />
+                </button>
+                <button
+                  type="button"
+                  onClick={changeColorGreen}
+                  className={`absolute cursor-pointer h-[80px] w-[80px] bg-[#42c4a3] left-10 -bottom-10 rounded-full ${
+                    isGreenActive ? "outline outline-[5px] outline-white" : ""
+                  }`}
+                >
+                  <img src={coffeGreen} className="-top-3 absolute" />
+                </button>
+              </div>
             </div>
             <Suspense fallback={<Loading />}>
               <div className="absolute h-full w-full -top-12 right-1 xl:right-3 z-50">
-                <Spline scene="https://prod.spline.design/WBuUN4ma1K-jn2U2/scene.splinecode" />
+                <Spline
+                  scene="https://draft.spline.design/J99oE1OEJB46YExt/scene.splinecode"
+                  onLoad={onLoad}
+                />
               </div>
             </Suspense>
           </section>
+
           <section className="flex-1">
             <div className="w-full pb-7">
               <div className="relative w-[90%] cursor-pointer">
