@@ -29,14 +29,19 @@ const LoadingScreen = ({ onLoadingComplete }) => {
   return (
     <>
       <motion.div
+        key={index}
         className={`flex items-center justify-center h-screen text-3xl bg-gradient-to-tr from-[#EAF0F1] to-[#EAE8E4] ${
           index == 2 && "text-orange-500 font-medium"
         }`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
       >
-        {texts[index]}
+        <motion.h1
+          initial={index == 2 ? { opacity: 0, translateY: 5 } : { opacity: 0 }}
+          animate={index == 2 ? { opacity: 1, translateY: 0 } : { opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={index == 2 ? { ease: "easeInOut" } : {}}
+        >
+          {texts[index]}
+        </motion.h1>
       </motion.div>
       <motion.div
         className="fixed bottom-0 left-0 w-full h-2 bg-orange-500"
