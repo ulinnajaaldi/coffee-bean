@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useRef, useEffect } from "react";
+import React, { useState, Suspense, useRef } from "react";
 import logo from "../assets/coffe-logo.svg";
 import shapeTea from "../assets/shape-tea-cup.svg";
 import coffeOrange from "../assets/coffe1.webp";
@@ -54,6 +54,14 @@ export default function HomePage() {
     setIsOrangeActive(false);
     setIsPurpleActive(false);
   }
+
+  const fillColor = isOrangeActive
+    ? "#FFB193"
+    : isPurpleActive
+    ? "#fd7c94"
+    : isGreenActive
+    ? "#42c4a3"
+    : null;
 
   return (
     <>
@@ -135,17 +143,10 @@ export default function HomePage() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
+                  <motion.path
                     d="M0 200C0 89.543 89.543 0 200 0H237C347.457 0 437 89.5431 437 200V501H0V200Z"
-                    fill={
-                      isOrangeActive
-                        ? "#FFB193"
-                        : isPurpleActive
-                        ? "#fd7c94"
-                        : isGreenActive
-                        ? "#42c4a3"
-                        : null
-                    }
+                    animate={{ fill: fillColor }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
                   />
                 </svg>
               </div>
